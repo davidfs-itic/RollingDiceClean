@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="cat.dfdocencia.rollingdiceclean" />
+                  <option name="mobileSdkAppId" value="1:163563916960:android:3a4ce9748f944a46ff03c5" />
+                  <option name="projectId" value="rolldice-b4dde" />
+                  <option name="projectNumber" value="163563916960" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
