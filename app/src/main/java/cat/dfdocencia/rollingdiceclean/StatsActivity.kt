@@ -3,6 +3,7 @@ package cat.dfdocencia.rollingdiceclean
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -39,8 +40,10 @@ class StatsActivity : AppCompatActivity() {
 
 
         binding.btnResetStats.setOnClickListener(this::resetStats)
+
         vmodel.resultEstadistica.observe(this,this::OnEstaditicaActualitzada)
         vmodel.saved.observe(this,this::OnEstadisticaGuardada)
+        vmodel.actualitzaEstadística()
     }
 
     private fun OnEstadisticaGuardada(success: Boolean) {
@@ -48,13 +51,13 @@ class StatsActivity : AppCompatActivity() {
             Toast.makeText(this,"Estadistica Guardada Correctament",Toast.LENGTH_LONG).show()
         }else{
             Toast.makeText(this,"Estadistica Guardada Correctament",Toast.LENGTH_LONG).show()
-
         }
     }
 
     private fun OnEstaditicaActualitzada(result: Result<Estadistica>) {
         //Actualitza la UI quan canvii l'estadística
         val dades = result.getOrDefault(Estadistica())
+        binding.txtTotalTirades.text=dades.tirades.toString()
         UpdateBarGraph(dades)
         UpdatePieGraph(dades)
         if (result.isFailure) {
@@ -67,14 +70,21 @@ class StatsActivity : AppCompatActivity() {
     }
 
     private fun resetStats(view: View?) {
-
+        vmodel.resetEstadística()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_estadistica, menu);
         return true;
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId==R.id.menuGuardar)
+        {
+            vmodel.guardarEstadistica(MainApp.idDispositiu)
 
+            return true
+        }else return super.onOptionsItemSelected(item)
+    }
 
     private fun UpdatePieGraph(estadistica:Estadistica) {
         val entries = listOf(

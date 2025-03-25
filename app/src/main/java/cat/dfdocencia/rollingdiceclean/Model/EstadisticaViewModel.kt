@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 class EstadisticaViewModel(private val dataprovider: EstadisticaProvider) : ViewModel() {
 
 
-    private val _saved = MutableLiveData<Boolean>(false)
+    private val _saved = MutableLiveData<Boolean>()
     val saved: LiveData<Boolean> get() = _saved
 
     private val _resultEstadistica = MutableLiveData<Result<Estadistica>>()
@@ -22,7 +22,9 @@ class EstadisticaViewModel(private val dataprovider: EstadisticaProvider) : View
     //Ho fem en el companion object
     //    viewModelFactory:
     //    Aquesta funció de la biblioteca androidx.lifecycle:lifecycle-viewmodel-ktx permet crear un ViewModelProvider.Factory de manera més concisa.
-    //    Dins de initializer, pots inicialitzar el teu ViewModel amb les dependències necessàries.
+    //    Pots inicialitzar el teu ViewModel amb les dependències necessàries amb
+    //    private val vmodel: EstadisticaViewModel by viewModels { EstadisticaViewModel.Factory }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -37,7 +39,13 @@ class EstadisticaViewModel(private val dataprovider: EstadisticaProvider) : View
             _resultEstadistica.value=result
         }
     }
-
+    fun actualitzaEstadística(){
+        _resultEstadistica.value=Result.success(dataprovider.dataEstadistica)
+    }
+    fun resetEstadística(){
+        dataprovider.dataEstadistica=Estadistica()
+        _resultEstadistica.value=Result.success(dataprovider.dataEstadistica)
+    }
     fun guardarEstadistica(idDispositiu:String) {
         viewModelScope.launch {
             val result= dataprovider.guardarEstadistica(idDispositiu,dataprovider.dataEstadistica)
@@ -47,7 +55,6 @@ class EstadisticaViewModel(private val dataprovider: EstadisticaProvider) : View
 
     fun ActualitzaEstadistica(dau1:Int, dau2:Int){
         EstadisticaProvider.afegeixTirada(dau1,dau2)
-
         //Actualitzem la variable per a que els observers s'enterin.
         _resultEstadistica.value=Result.success(dataprovider.dataEstadistica)
 

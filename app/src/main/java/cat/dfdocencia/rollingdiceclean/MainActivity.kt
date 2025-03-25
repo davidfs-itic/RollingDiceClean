@@ -33,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         binding.tiradesText.text="Carregant Estadística..."
         vmodel.cargarEstadistica(MainApp.idDispositiu)
 
-        binding.btnRoll.setOnClickListener {
-
-        }
         binding.btnRoll.setOnClickListener(this::onbtnRollClicked)
         vmodel.resultEstadistica.observe(this, this::onEstaditicaChanged)
     }
